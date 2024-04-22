@@ -14,7 +14,8 @@ class ray {
 	public:
 		// CONSTRUCTORS
 
-		ray() {}
+		// ray() {} causes error (-Weffc+). Commenting it out for now.
+		// ray() {}
 		ray(const point3& origin, const vec3& direction) : orig(origin), dir(direction) {}
 
 		// MEMBER FUNCTIONS
