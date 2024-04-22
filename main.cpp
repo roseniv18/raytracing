@@ -13,7 +13,17 @@ int main() {
 
 	std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
 
+	/*
+		We are generating a ppm image. PPM (Portable Pixel Map) is a simple way to create and display
+		colored images. Each pixel has a corresponding rgb color.
+		Below we are generating the pixel grid, top to bottom (first loop), left to right (second loop).
+	*/
 	for(int y = 0; y < image_height; y++) {
+		/* 
+			Show progress bar.
+			std::flush ensures the output buffer is flushed, that is, ensures that 
+			the progress text is shown immediately and updated in real-time.
+		*/
 		std::clog << "\rScanlines remaining: " << (image_height - y) << ' ' << std::flush;
 		for(int x = 0; x < image_width; x++) {
 			auto r = double(x) / (image_width - 1);

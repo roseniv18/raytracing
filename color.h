@@ -6,7 +6,10 @@
 #include <iostream>
 
 using color = vec3;
-
+/*
+	Implementing a color using the vec3 class - Change later?
+	We will use xyz of the vector to represent rgb color.
+*/
 void write_color(std::ostream& out, const color& pixel_color) {
     auto r = pixel_color.x();
     auto g = pixel_color.y();
