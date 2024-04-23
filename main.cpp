@@ -36,7 +36,18 @@ int main() {
 	auto pixel_delta_v = viewport_v / image_height;
 
 	// Calculate location of upper left pixel.
+	/* 
+		First, we need to find point Q - the upper left point of the viewport.
+		We subtract the (0,0,focal_length) vector from the camera (Not really necessary when camera is at 0,0,0).
+		The resulting vector points to the center of the viewport.
+		Then, we subtract the resulting vector with (u_half + v_half). The resulting vector points to Q.
+	 */
 	auto viewport_upper_left = camera_center - vec3(0, 0, focal_length) - viewport_u / 2 - viewport_v / 2;
+	/* 
+		Next we find the first pixel location. The pixel grid is inset from the viewport edges by half
+		of the pixel-to-pixel distance. This way, the viewport is evenly divided into width x height 
+		identical regions.
+	*/
 	auto pixel00_loc = viewport_upper_left + 0.5 * (pixel_delta_u + pixel_delta_v);
 
 	// RENDER
