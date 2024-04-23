@@ -4,7 +4,46 @@
 #include "color.h"
 #include "ray.h"
 
+/*
+	The equation of a sphere of radius r, centered at the origin is x^2 + y^2 + z^2 = r^2
+	Depending on the value of the left-hand side of the equation (<0, =0, >0), a point is either
+	inside the sphere; on the surface of the sphere; outside the sphere respectively.
+	For a sphere with an arbitrary center (point C_x, C_y, C_z):
+	(C_x - x)^2 + (C_y - y)^2 + (C_z - z)^2 = r^2
+	We note that the vector from point P(x,y,z) to center C(C_x, C_y, C_z) is (C-P)
+	Using the fact that the dot product (C-P).(C-P) = (C_x - x)^2 + (C_y - y)^2 + (C_z - z)^2 = r^2
+	We want to know if the ray P(t) = Q + td ever hits the sphere. We replace P(t) with Q + td in the
+	above equation. Using the rules of vector algebra to distribute the dot product we get:
+	t^2d.d - 2td.(C-Q) + (C-Q).(C-Q) - r^2 = 0
+	This is a quadratic equation. 
+	If discriminant < 0, there are no real solutions, 
+	discriminant = 0 means one real solution,
+	discriminant > 0 means two real solutions.
+
+*/
+double hit_sphere(const point3& center, double radius, const ray& r) {
+	vec3 oc = center - r.origin();
+	auto a = dot(r.direction(), r.direction());
+	auto b = -2.0 * dot(r.direction(), oc);
+	auto c = dot(oc, oc) - radius * radius;
+	auto discriminant = b * b - 4 * a * c;
+
+	if(discriminant < 0) {
+		return -1.0;
+	}
+
+	else {
+		return (-b - sqrt(discriminant)) / (2.0 * a);
+	}
+}
+
 color ray_color(const ray& r) {
+	auto t = hit_sphere(point3(0, 0, -1), 0.5, r);
+	if(t > 0.0) {
+		vec3 N = unit_vector(r.at(t) - vec3(0, 0, -1));
+		return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+	}
+
 	vec3 unit_direction = unit_vector(r.direction());
 	auto a = 0.5 * (unit_direction.y() + 1.0);
 	return (1.0 - a) * color(1.0, 1.0, 1.0) + a * color(0.5, 0.7, 1.0);
