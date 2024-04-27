@@ -26,10 +26,11 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 	vec3 oc = center - r.origin();
 	// Terms of the quadratic equation.
 	auto a = dot(r.direction(), r.direction());
-	auto b = -2.0 * dot(r.direction(), oc);
+	// Assume b = -2h; we get h = d.(C - Q). This is useful for simplification.
+	auto h = dot(r.direction(), oc);
 	auto c = dot(oc, oc) - radius * radius;
 
-	auto discriminant = b * b - 4 * a * c;
+	auto discriminant = h * h - a * c;
 
 	// Check if discriminant has real solutions.
 	if(discriminant < 0) {
@@ -37,7 +38,7 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
 	}
 
 	else {
-		return (-b - sqrt(discriminant)) / (2.0 * a);
+		return (h - sqrt(discriminant)) / a;
 	}
 }
 
